@@ -287,14 +287,9 @@ export default function GameBoard({
     };
   }, []);
 
-  /*
-   * 17 × 17 layout:
-   *
-   * Cell | Gap | Cell | Gap | Cell ...
-   *
-   * 9 cell tracks
-   * 8 gap tracks
-   */
+  // =========================
+  // BOARD GRID
+  // =========================
 
   const gridStyle = {
     gridTemplateColumns:
@@ -304,13 +299,28 @@ export default function GameBoard({
       "repeat(8, minmax(0, 1fr) 6px) minmax(0, 1fr)",
   };
 
+  // =========================
+  // WALL BUTTON STYLE
+  // =========================
+
   const wallButtonClass =
     "group z-20 flex touch-none select-none items-center justify-center border-0 bg-transparent p-0 outline-none focus:outline-none focus:ring-0 active:bg-transparent [-webkit-tap-highlight-color:transparent]";
 
   return (
-    <div className="mx-auto aspect-square w-full max-w-md rounded-lg bg-board-panel p-2">
+    <div
+      className="
+        mx-auto
+        aspect-square
+        w-full
+        max-w-md
+        select-none
+        rounded-lg
+        bg-board-panel
+        p-2
+      "
+    >
       <div
-        className="grid h-full w-full"
+        className="grid h-full w-full select-none"
         style={gridStyle}
       >
         {/* =========================
@@ -357,7 +367,7 @@ export default function GameBoard({
         )}
 
         {/* =========================
-            HORIZONTAL WALL SLOTS
+            HORIZONTAL WALLS
         ========================== */}
 
         {Array.from({ length: 8 }).map(
@@ -427,7 +437,7 @@ export default function GameBoard({
         )}
 
         {/* =========================
-            VERTICAL WALL SLOTS
+            VERTICAL WALLS
         ========================== */}
 
         {Array.from({ length: 8 }).map(
