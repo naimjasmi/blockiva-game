@@ -24,13 +24,26 @@ export default function BoardCell({
     <button
       type="button"
       onClick={onClick}
-      className={`aspect-square w-full rounded-md transition ${cellColor} ${
-        isTopGoal
+      className={`
+        aspect-square
+        w-full
+        rounded-md
+        select-none
+        outline-none
+        focus:outline-none
+        focus:ring-0
+        active:outline-none
+        active:ring-0
+        [-webkit-tap-highlight-color:transparent]
+        transition
+        ${cellColor}
+        ${isTopGoal
           ? "border-t-2 border-blue-500/40"
           : isBottomGoal
             ? "border-b-2 border-orange-500/40"
             : ""
-      }`}
+        }
+      `}
     >
       {occupant && (
         <PlayerPiece player={occupant} />
