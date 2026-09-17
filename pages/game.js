@@ -53,7 +53,7 @@ export default function Game() {
     async function loadGame() {
       const roomCode = router.query.room;
 
-      console.log("Loading room:", roomCode);
+      // console.log("Loading room:", roomCode);
 
       const { data: room, error } = await supabase.rpc(
         "get_room",
@@ -62,8 +62,8 @@ export default function Game() {
         }
       );
 
-      console.log("Loaded room:", room);
-      console.log("Load error:", error);
+      // console.log("Loaded room:", room);
+      // console.log("Load error:", error);
 
       if (error) {
         console.error("Load game error:", error);
@@ -91,9 +91,9 @@ export default function Game() {
 
       const sessionId = getPlayerSessionId();
 
-      console.log("My session:", sessionId);
-      console.log("Player 1 session:", room.player1_session_id);
-      console.log("Player 2 session:", room.player2_session_id);
+      // console.log("My session:", sessionId);
+      // console.log("Player 1 session:", room.player1_session_id);
+      // console.log("Player 2 session:", room.player2_session_id);
 
       if (room.player1_session_id === sessionId) {
         setCurrentPlayer(1);
@@ -193,7 +193,7 @@ export default function Game() {
       return;
     }
 
-    console.log("Game state saved:", data);
+    // console.log("Game state saved:", data);
   }
   async function handleForfeitGame() {
     const roomCode = router.query.room;
