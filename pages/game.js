@@ -11,6 +11,7 @@ import {
   isValidWallPlacement,
   getValidMoves,
 } from "@/lib/gameLogic";
+import HowToPlay from "@/components/HowToPlay";
 
 const PLAYER_1_START = { row: 8, col: 4 };
 const PLAYER_2_START = { row: 0, col: 4 };
@@ -38,6 +39,7 @@ export default function Game() {
   const [player2Ready, setPlayer2Ready] = useState(false);
   const [currentPlayer, setCurrentPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showHelp, setShowHelp] = useState(false);
 
   /*
    * Get legal moves for the current player.
@@ -556,6 +558,7 @@ export default function Game() {
         </Head>
 
         <main className="flex min-h-screen items-center justify-center px-5">
+
           <div className="w-full max-w-sm rounded-2xl border border-board-cellLine bg-board-panel/80 p-8 text-center shadow-2xl">
 
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5 text-3xl">
@@ -595,7 +598,16 @@ export default function Game() {
       </Head>
 
       <main className="flex min-h-screen flex-col items-center justify-center px-4 py-8">
+        <button
+          type="button"
+          onClick={() => setShowHelp(true)}
+          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-parchment/70 transition hover:bg-white/20"
+          aria-label="How to play"
+        >
+          ?
+        </button>
 
+        <HowToPlay open={showHelp} onClose={() => setShowHelp(false)} />
         <GameHeader
           turn={turn}
           player1Walls={player1Walls}
