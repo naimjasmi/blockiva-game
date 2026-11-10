@@ -230,7 +230,7 @@ export default function Home() {
               type="button"
               onClick={handleCreateGame}
               disabled={creatingRoom}
-              className="group w-full rounded-xl bg-p1 px-6 py-3.5 font-medium text-board-bg shadow-lg shadow-p1/10 transition hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50"
+              className="group w-full mb-5 rounded-xl bg-p1 px-6 py-3.5 font-medium text-board-bg shadow-lg shadow-p1/10 transition hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <span className="flex items-center justify-center gap-2">
                 {creatingRoom ? (
