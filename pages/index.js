@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { supabase } from "@/lib/supabase";
 import { generateRoomCode } from "@/lib/roomCode";
 import { getPlayerSessionId } from "@/lib/playerSession";
+import HowToPlay from "@/components/HowToPlay";
 
 // Decorative 9x9 board motif
 function BoardMotif() {
@@ -23,6 +24,7 @@ function BoardMotif() {
 
 export default function Home() {
   const [mode, setMode] = useState(null);
+  const [botLevel, setBotLevel] = useState("normal");
   const [joinCode, setJoinCode] = useState("");
   const [creatingRoom, setCreatingRoom] = useState(false);
   const [createError, setCreateError] = useState("");
@@ -30,6 +32,24 @@ export default function Home() {
   const [joinError, setJoinError] = useState("");
 
   const router = useRouter();
+
+  const [showHelp, setShowHelp] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem("blockiva_seen_tutorial")) {
+        setShowHelp(true);
+      }
+    } catch { }
+  }, []);
+
+  function closeHelp() {
+    setShowHelp(false);
+
+    try {
+      localStorage.setItem("blockiva_seen_tutorial", "1");
+    } catch { }
+  }
 
   async function handleCreateGame() {
     setCreatingRoom(true);
@@ -169,6 +189,42 @@ export default function Home() {
           {/* Main action card */}
           <div className="mt-9 rounded-2xl border border-board-cellLine bg-board-panel/80 p-5 shadow-2xl backdrop-blur">
 
+            {/* Play vs Bot */}
+            <div className="mt-4 rounded-xl border border-board-cellLine bg-black/10 p-3">
+              <div className="mb-3 flex gap-2">
+                {["easy", "normal", "hard"].map((level) => (
+                  <button
+                    key={level}
+                    type="button"
+                    onClick={() => setBotLevel(level)}
+                    className={`flex-1 rounded-lg px-2 py-1.5 text-xs capitalize transition ${botLevel === level
+                      ? "bg-white/15 text-parchment"
+                      : "text-parchment/40 hover:bg-white/5"
+                      }`}
+                  >
+                    {level}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => router.push(`/bot?level=${botLevel}`)}
+                className="w-full rounded-lg border border-parchment/30 px-6 py-3 font-medium text-parchment transition hover:bg-white/5 active:scale-[0.98]"
+              >
+                Play vs Bot
+              </button>
+            </div>
+
+            {/* Divider */}
+            <div className="my-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-board-cellLine" />
+              <span className="text-[10px] uppercase tracking-widest text-parchment/30">
+                or
+              </span>
+              <div className="h-px flex-1 bg-board-cellLine" />
+            </div>
+
             {/* Create */}
             <button
               type="button"
@@ -193,26 +249,16 @@ export default function Home() {
               </span>
             </button>
 
-            {/* Divider */}
-            <div className="my-5 flex items-center gap-3">
-              <div className="h-px flex-1 bg-board-cellLine" />
-              <span className="text-[10px] uppercase tracking-widest text-parchment/30">
-                or
-              </span>
-              <div className="h-px flex-1 bg-board-cellLine" />
-            </div>
-
             {/* Join */}
             <button
               type="button"
               onClick={() =>
                 setMode(mode === "join" ? null : "join")
               }
-              className={`w-full rounded-xl border px-6 py-3.5 font-medium transition active:scale-[0.98] ${
-                mode === "join"
-                  ? "border-p2 bg-p2/10 text-p2"
-                  : "border-p2/40 bg-transparent text-p2 hover:border-p2 hover:bg-p2/5"
-              }`}
+              className={`w-full rounded-xl border px-6 py-3.5 font-medium transition active:scale-[0.98] ${mode === "join"
+                ? "border-p2 bg-p2/10 text-p2"
+                : "border-p2/40 bg-transparent text-p2 hover:border-p2 hover:bg-p2/5"
+                }`}
             >
               {mode === "join" ? "Close join game" : "Join game"}
             </button>
@@ -262,12 +308,21 @@ export default function Home() {
             9 × 9 board · 10 walls each · 2 players
           </p>
 
+          <button
+            type="button"
+            onClick={() => setShowHelp(true)}
+            className="mx-auto mt-3 block text-xs text-parchment/40 underline-offset-4 transition hover:text-parchment/70 hover:underline"
+          >
+            How to play
+          </button>
+
           {createError && (
             <p className="mt-3 text-center text-xs text-red-400">
               {createError}
             </p>
           )}
         </div>
+        <HowToPlay open={showHelp} onClose={closeHelp} />
       </main>
     </>
   );
